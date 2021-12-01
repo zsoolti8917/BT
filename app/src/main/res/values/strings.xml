@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">BT</string>
+    <string name="refresh">Refresh</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="readData">Read Data</string>
+    <string name="humidity_temperature">Temp</string>
+    <string name="barometer">Baro</string>
+    <string name="uv">UV</string>
+    <string name="MainAct">Main</string>
+</resources>
