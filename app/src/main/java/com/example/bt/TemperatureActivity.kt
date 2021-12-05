@@ -29,12 +29,12 @@ class TemperatureActivity: AppCompatActivity() {
     }
     fun barometerActivity(){
         val myIntent: Intent = Intent(this@TemperatureActivity, BarometerActivity::class.java)
-        myIntent.putExtra(MainActivity.EXTRA_ADRESS_GRAF2, ControlActivity.m_adress)
+        myIntent.putExtra(MainActivity.EXTRA_ADRESS, ControlActivity.m_adress)
         this@TemperatureActivity.startActivity(myIntent)
     }
     fun uvActivity(){
         val myIntent: Intent = Intent(this@TemperatureActivity, UVActivity::class.java)
-        myIntent.putExtra(MainActivity.EXTRA_ADRESS_GRAF3, ControlActivity.m_adress)
+        myIntent.putExtra(MainActivity.EXTRA_ADRESS, ControlActivity.m_adress)
         this@TemperatureActivity.startActivity(myIntent)
     }
     fun setLineChartData(){

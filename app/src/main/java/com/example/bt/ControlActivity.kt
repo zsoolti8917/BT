@@ -52,14 +52,26 @@ class ControlActivity : AppCompatActivity() {
         ConnectToDevice(this).execute()
 
         findViewById<Button>(R.id.control_led_disconnect).setOnClickListener(View.OnClickListener { disconnect() })
-        temperature= findViewById<TextView>(R.id.temperature_text_mutable)
-        humidity= findViewById<TextView>(R.id.humidity_text_mutable)
-        barometer= findViewById<TextView>(R.id.barometer_text_mutable)
-        uv= findViewById<TextView>(R.id.uv_text_mutable)
+        temperature = findViewById<TextView>(R.id.temperature_text_mutable)
+        humidity = findViewById<TextView>(R.id.humidity_text_mutable)
+        barometer = findViewById<TextView>(R.id.barometer_text_mutable)
+        uv = findViewById<TextView>(R.id.uv_text_mutable)
         findViewById<Button>(R.id.temperature_humidity).setOnClickListener(View.OnClickListener { temperatureActivity() })
         findViewById<Button>(R.id.barometer).setOnClickListener(View.OnClickListener { barometerActivity() })
         findViewById<Button>(R.id.uv).setOnClickListener(View.OnClickListener { uvActivity() })
 
+//        val temperatureFile = "temperatureText.txt"
+//        Log.i("problem", "temperature file open")
+//        val myfile = File(temperatureFile)
+//        Log.i("problem", "create an instance of temp file")
+//
+//        myfile.printWriter().use { out ->
+//
+//            out.println("line.toString().subSequence(1,6)")
+//            Log.i("problem", "TEMP WRITTEN TO TXT!")
+//        }
+
+        Log.i("helper",getFilesDir().toString())
     }
 fun temperatureActivity(){
     val myIntent: Intent = Intent(this@ControlActivity, TemperatureActivity::class.java)
@@ -71,7 +83,7 @@ fun temperatureActivity(){
         myIntent.putExtra(MainActivity.EXTRA_ADRESS_GRAF2, m_adress)
         this@ControlActivity.startActivity(myIntent)
     }
-    fun uvActivity(){
+    fun uvActivity() {
         val myIntent: Intent = Intent(this@ControlActivity, UVActivity::class.java)
         myIntent.putExtra(MainActivity.EXTRA_ADRESS_GRAF3, m_adress)
         this@ControlActivity.startActivity(myIntent)
@@ -84,25 +96,9 @@ fun temperatureActivity(){
                 e.printStackTrace()
             }
     }
-
-
-
     fun InputStream.readTextAndClose(charset: Charset = Charsets.UTF_8): String {
         return this.bufferedReader(charset).use { it.readText() }
-
-        //val inputAsString = input.readTextAndClose()  // defaults to UTF-8 // meghivas
     }
-
-    /* private fun recieveCommand(): String {
-         if(m_bluetoothSocket != null)
-             try{
-                 m_bluetoothSocket!!.
-             }catch (e: IOException){
-                 e.printStackTrace()
-             }
-     }*/
-
-
     private fun disconnect() {
         if (m_bluetoothSocket != null) {
             try {
@@ -116,15 +112,12 @@ fun temperatureActivity(){
         finish()
     }
 
-
     public class ConnectToDevice(c: Context) : AsyncTask<Void, Void, String>() {
         private var connectSuccess: Boolean = true
         private val context: Context
-
         init {
             this.context = c
         }
-
         override fun onPreExecute() {
             super.onPreExecute()
             m_progress = ProgressDialog.show(context, "Connecting...", "please wait")
@@ -146,6 +139,7 @@ fun temperatureActivity(){
             }
             return null.toString()
         }
+
         public fun readData() {
             val t: Thread = object : Thread() {
                 override fun run() {
@@ -162,7 +156,7 @@ fun temperatureActivity(){
                                     println(line)
                                     temperature.setText(line.toString())
                                     //ez az egyetlen ami eddig mukodik
-                                   // runOnUiThread { temperature.setText(line.toString()) }
+                                    // runOnUiThread { temperature.setText(line.toString()) }
                                 }
                             } catch (e: IOException) {
                                 e.printStackTrace()
@@ -214,7 +208,7 @@ fun temperatureActivity(){
                 Log.i("data", "couldnt connect")
             } else {
                 m_isConnected = true
-readData()
+                readData()
 
             }
             m_progress.dismiss()
