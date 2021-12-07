@@ -20,6 +20,11 @@ import java.util.*
 import android.system.Os.socket
 import android.system.Os.socket
 import android.content.Intent
+import android.os.Looper
+import android.text.TextUtils
+import androidx.lifecycle.LiveData
+import com.example.bt.data.*
+import kotlinx.coroutines.*
 import java.io.*
 import java.lang.StringBuilder
 import java.text.SimpleDateFormat
@@ -54,12 +59,19 @@ class ControlActivity : AppCompatActivity() {
         repository = DataRepository(dataDao)
     }
 
+    private var job = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + job)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.control_layout)
         m_adress = intent.getStringExtra(MainActivity.EXTRA_ADRESS).toString()
 
-        ConnectToDevice(this).execute()
+        //ConnectToDevice(this).execute()
+
+        uiScope.launch {
+            connect()
+        }
 
         findViewById<Button>(R.id.control_led_disconnect).setOnClickListener(View.OnClickListener { disconnect() })
         temperature = findViewById<TextView>(R.id.temperature_text_mutable)
@@ -83,12 +95,172 @@ class ControlActivity : AppCompatActivity() {
 
       //  Log.i("helper",getFilesDir().toString())
     }
-fun temperatureActivity(){
-    val myIntent: Intent = Intent(this@ControlActivity, TemperatureActivity::class.java)
-    myIntent.putExtra(MainActivity.EXTRA_ADRESS_GRAF1, m_adress)
-    this@ControlActivity.startActivity(myIntent)
-}
-    fun barometerActivity(){
+
+    suspend fun connect() {
+
+        withContext(Dispatchers.IO) {
+            var connectSuccess = true
+
+            withContext(Dispatchers.Main) {
+
+                m_progress =
+                    ProgressDialog.show(this@ControlActivity, "Connecting...", "please wait")
+                Log.i("Progress dialog", "connecting dialog")
+            }
+
+
+            try {
+                Log.i("trying", "try catch first line")
+                if (m_bluetoothSocket == null || !m_isConnected) {
+                    Log.i("checking bt socket", "m_bluetoothSocket == null || !m_isConnected")
+                    m_bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+                    Log.i("mbtadapter", "getting an instance of BT adapter")
+
+                    val device: BluetoothDevice = m_bluetoothAdapter.getRemoteDevice(m_adress)
+                    Log.i("deviceslist", "cycling throu device lists $device")
+
+                    m_bluetoothSocket = device.createInsecureRfcommSocketToServiceRecord(m_myUUID)
+                    Log.i("Our Socket", "creating socket for our device")
+
+                    BluetoothAdapter.getDefaultAdapter().cancelDiscovery()
+                    Log.i("getting adapter", "getting adapter and canceling discovery")
+
+                    m_bluetoothSocket!!.connect()
+                    Log.i("CONNECTION", "Trying to connect to our device")
+
+
+                }
+            } catch (e: IOException) {
+                connectSuccess = false
+                e.printStackTrace()
+                Log.i("CATCH", "TRY CATCH PROBLEM")
+
+            }
+//            launch(UI) {
+//                val images = getImages(galleryPath)
+//                imageListAdapter.setItems(images)
+//            }
+
+            if (!connectSuccess) {
+                Log.i("data", "couldnt connect")
+            } else {
+                withContext(Dispatchers.Main) {
+
+                    m_progress.dismiss()
+                    Log.i("dialog dismiss", "dismissing progress dialog")
+
+                }
+                m_isConnected = true
+                readData()
+
+//temperature.text = "Updated from other Thread"
+                Log.i("succesfull connection", "connection established succesfully")
+
+            }
+
+        }
+    }
+
+    suspend fun readData() {
+        Log.i("problem", "problem1")
+        try {
+//var i = 0;
+//            val temperatureFile = "temperatureText.txt"
+//            Log.i("problem", "temperature file open")
+//            val myfile = File(temperatureFile)
+//            Log.i("problem", "create an instance of temp file")
+
+            val socketInputStream: InputStream = m_bluetoothSocket!!.inputStream
+            Log.i("problem", "dismissing progress dialog1")
+            val read = InputStreamReader(socketInputStream)
+            Log.i("problem", "dismissing progress dialog2")
+
+            Log.i( "problem", "dismissing progress dialog3")
+            val scan = Scanner(socketInputStream)
+            Log.i("problem", "dismissing progress dialog4")
+
+            Log.i("problem", "dismissing progress dialog5")
+            while (true) {
+                try {
+                    while (scan.hasNextLine()) {
+                        Log.i("problem", "dismissing progress dialog8")
+                        var line = scan.nextLine()
+                        var help = line.subSequence(0, 1)
+                        Log.i("problem", "dismissing progress dialog8")
+
+                        when (help) {
+                            "<" -> this@ControlActivity.runOnUiThread(java.lang.Runnable {
+                                if (!line.toString().isBlank()) {
+                                    temperature.setText(line.toString().subSequence(1, 6))
+
+                                    insertDatatoDatabase(line.toString())
+                                    Log.i("problem", "settext!")
+                                    Log.i("problem", "text = ${line.toString()}")
+
+//
+//                                    File(applicationContext.filesDir, "test.txt").printWriter().use { out ->
+//                                        out.println("${i}, ${line.toString()}")
+//                                       Log.i("problem", "TEMP WRITTEN TO TXT!")
+//                                    }
+
+                                }
+                            })
+                            "^" -> this@ControlActivity.runOnUiThread(java.lang.Runnable {
+                                if (!line.toString().isBlank()) {
+                                    barometer.setText(line.toString().subSequence(1, 8))
+                                    insertDatatoDatabase(line.toString())
+                                    Log.i("problem", "settext!")
+                                    Log.i("problem", "text = ${line.toString()}")
+                                }
+                            })
+                            "?" -> this@ControlActivity.runOnUiThread(java.lang.Runnable {
+                                if (!line.toString().isBlank()) {
+                                    humidity.setText(line.toString().subSequence(1, 6))
+                                    insertDatatoDatabase(line.toString())
+                                    Log.i("problem", "settext!")
+                                    Log.i("problem", "text = ${line.toString()}")
+                                }
+                            })
+                            "%" -> this@ControlActivity.runOnUiThread(java.lang.Runnable {
+                                if (!line.toString().isBlank()) {
+                                    uv.setText(line.toString().subSequence(1, 5))
+                                    insertDatatoDatabase(line.toString())
+                                    Log.i("problem", "settext!")
+                                    Log.i("problem", "text = ${line.toString()}")
+                                }
+                            })
+                            else -> { // Note the block
+                                print("x is neither 1 nor 2")
+                            }
+                        }
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    Log.i("problem", "dismissing progress dialog9")
+                    break
+                }
+            }
+        } catch (e: IOException) {
+            Log.i("problem", "dismissing progress dialog10")
+            e.printStackTrace()
+        }
+//        fun WriteToFile(str : String){
+//            try {
+//                var fo = FileWriter("TemperatureFile",true)
+//                Log.i("problem","OPEN FILEWRITER")
+//                fo.write(str+"\n")
+//                Log.i("problem","WRITE DATA")
+//            }catch (ex:Exception){
+//                Log.i("problem","WRITE TO FILE CATCH PROBLEM")
+//            }
+//        }
+    }
+    fun temperatureActivity() {
+        val myIntent: Intent = Intent(this@ControlActivity, TemperatureActivity::class.java)
+        myIntent.putExtra(MainActivity.EXTRA_ADRESS_GRAF1, m_adress)
+        this@ControlActivity.startActivity(myIntent)
+    }
+    fun barometerActivity() {
         val myIntent: Intent = Intent(this@ControlActivity, BarometerActivity::class.java)
         myIntent.putExtra(MainActivity.EXTRA_ADRESS_GRAF2, m_adress)
         this@ControlActivity.startActivity(myIntent)
