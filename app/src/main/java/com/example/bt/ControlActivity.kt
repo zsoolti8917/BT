@@ -22,6 +22,7 @@ import android.system.Os.socket
 import android.content.Intent
 import java.io.*
 import java.lang.StringBuilder
+import java.text.SimpleDateFormat
 
 
 class ControlActivity : AppCompatActivity() {
@@ -42,6 +43,15 @@ class ControlActivity : AppCompatActivity() {
         lateinit var barometer: TextView
         lateinit var uv: TextView
 
+    }
+
+    private val repository: DataRepository
+
+
+
+    init {
+        val dataDao = SensorDataDatabase.getDatabase(this).dataDao()
+        repository = DataRepository(dataDao)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,7 +81,7 @@ class ControlActivity : AppCompatActivity() {
 //            Log.i("problem", "TEMP WRITTEN TO TXT!")
 //        }
 
-        Log.i("helper",getFilesDir().toString())
+      //  Log.i("helper",getFilesDir().toString())
     }
 fun temperatureActivity(){
     val myIntent: Intent = Intent(this@ControlActivity, TemperatureActivity::class.java)
@@ -110,6 +120,86 @@ fun temperatureActivity(){
             }
         }
         finish()
+    }
+
+    private fun insertDatatoDatabase(dataType : String){
+        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+        val currentDate = sdf.format(Date())
+        var data = dataType
+        var help = data.subSequence(0, 1)
+
+        
+
+        if(inputCheck(currentDate,data)){
+
+            when (help) {
+//                "<" -> {
+//                    val temperatureDatas = TemperatureData(0,currentDate.toString(),data.toString())
+//                    Log.i("problem1", "temperature data added to database")
+//                    addTemperatureData(temperatureDatas)
+//                }
+
+
+                        
+                "^" -> {
+                    val barometerDatas = BarometerData(0,currentDate.toString(),data.toString())
+                    Log.i("problem1", "barometer data added to database")
+                    addBarometerDatat(barometerDatas)
+                }
+
+
+//                "?" -> {
+//                    val humidityDatas = HumidityData(0,currentDate.toString(),data.toString())
+//                    Log.i("problem1", "humidity  data added to database")
+//                    addHumidityData(humidityDatas)
+//                }
+
+
+//                "%" -> {
+//                    val uvDatas = UvData(0,currentDate.toString(),data.toString())
+//                    Log.i("problem1", " uv data added to database")
+//                    addUvData(uvDatas)
+//                }
+
+
+                else -> { // Note the block
+                    print("x is neither 1 nor 2")
+                }
+            }
+
+
+        }
+    }
+
+//    fun addTemperatureData(temperatureData: TemperatureData){
+//        uiScope.launch(Dispatchers.IO) {
+//            Log.i("problem1", "addTempData")
+//            repository.addTemperatureData(temperatureData)
+//        }
+//    }
+
+//    fun addHumidityData(humidityData: HumidityData){
+//        uiScope.launch(Dispatchers.IO) {
+//            Log.i("problem1", "daddHumData")
+//            repository.addHumidityData(humidityData)
+//        }
+//    }
+
+    fun addBarometerDatat(barometerData: BarometerData){
+        uiScope.launch(Dispatchers.IO) {
+            Log.i("problem1", "add baro data")
+            repository.addBarometerData(barometerData)
+        }
+    }
+
+//    fun addUvData(uvData: UvData){
+//        uiScope.launch(Dispatchers.IO) {
+//            Log.i("problem1", "add uv data")
+//            repository.addUvData(uvData)
+//        }
+//    }
+    private fun inputCheck(date: String, sensorData: String): Boolean{
+        return !(TextUtils.isEmpty(date.toString()) && TextUtils.isEmpty(sensorData.toString()))
     }
 
     public class ConnectToDevice(c: Context) : AsyncTask<Void, Void, String>() {
