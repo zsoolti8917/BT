@@ -9,11 +9,11 @@ import androidx.room.Query
 @Dao
 interface DataDao {
 
-//    @Insert(onConflict = OnConflictStrategy.IGNORE)
-//    suspend fun addBarometerData(barometerData: BarometerData)
+   @Insert(onConflict = OnConflictStrategy.IGNORE)
+     fun addBarometerData(barometerData: BarometerData)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addHumidityData(dataHum : HumidityData)
+ //   @Insert(onConflict = OnConflictStrategy.IGNORE)
+  //  suspend fun addHumidityData(dataHum : HumidityData)
 //
 //    @Insert(onConflict = OnConflictStrategy.IGNORE)
 //    suspend fun addUvData(dataUV : UvData)
@@ -21,8 +21,8 @@ interface DataDao {
 //    @Insert(onConflict = OnConflictStrategy.IGNORE)
 //    suspend fun addTemperatureData(dataTemp : TemperatureData)
 //
-//   @Query("SELECT * FROM barometer_table ORDER BY id DESC")
-//    fun readAllBarometerData(): LiveData<List<BarometerData>>
+   @Query("SELECT * FROM barometer_table ORDER BY id DESC")
+    fun readAllBarometerData(): LiveData<List<BarometerData>>
 //
 //    @Query("SELECT * FROM humidity_table ORDER BY id DESC")
 //    fun readAllHumidityData(): LiveData<List<HumidityData>>

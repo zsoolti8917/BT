@@ -3,9 +3,12 @@ package com.example.bt
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.example.bt.data.DataRepository
+import com.example.bt.data.SensorDataDatabase
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -21,6 +24,10 @@ class TemperatureActivity: AppCompatActivity() {
         findViewById<Button>(R.id.Main).setOnClickListener(View.OnClickListener { mainActivity() })
         findViewById<Button>(R.id.barometer).setOnClickListener(View.OnClickListener { barometerActivity() })
         findViewById<Button>(R.id.uv).setOnClickListener(View.OnClickListener { uvActivity() })
+        val repository = DataRepository(SensorDataDatabase.getDatabase(applicationContext).dataDao())
+
+
+        repository.readAllBarometerData.observe(this,{ Log.i("tag",it.size.toString()) })
     }
     fun mainActivity(){
         val myIntent: Intent = Intent(this@TemperatureActivity, ControlActivity::class.java)

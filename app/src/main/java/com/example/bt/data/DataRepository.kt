@@ -14,9 +14,11 @@ class DataRepository(private val dataDao: DataDao) {
 //
 //
 //
-    suspend fun addBarometerData(barometerData: BarometerData){
+    fun addBarometerData(barometerData: BarometerData){
         dataDao.addBarometerData(barometerData)
     }
+
+
 //
 //    suspend fun  addTemperatureData(temperatureData: TemperatureData){
 //        dataDao.addTemperatureData(temperatureData)

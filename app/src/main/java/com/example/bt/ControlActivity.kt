@@ -50,15 +50,7 @@ class ControlActivity : AppCompatActivity() {
 
     }
 
-    private val repository: DataRepository
-
-
-
-    init {
-        val dataDao = SensorDataDatabase.getDatabase(this).dataDao()
-        repository = DataRepository(dataDao)
-    }
-
+    lateinit var repository: DataRepository
     private var job = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
 
@@ -73,6 +65,7 @@ class ControlActivity : AppCompatActivity() {
             connect()
         }
 
+        repository = DataRepository(SensorDataDatabase.getDatabase(applicationContext).dataDao())
         findViewById<Button>(R.id.control_led_disconnect).setOnClickListener(View.OnClickListener { disconnect() })
         temperature = findViewById<TextView>(R.id.temperature_text_mutable)
         humidity = findViewById<TextView>(R.id.humidity_text_mutable)
@@ -357,13 +350,15 @@ class ControlActivity : AppCompatActivity() {
 //        }
 //    }
 
-    fun addBarometerDatat(barometerData: BarometerData){
-        uiScope.launch(Dispatchers.IO) {
-            Log.i("problem1", "add baro data")
-            repository.addBarometerData(barometerData)
+    fun addBarometerDatat(barometerData: BarometerData) {
+        uiScope.launch {
+            withContext(Dispatchers.IO) {
+                Log.i("problem1", "add baro data")
+                repository.addBarometerData(barometerData)
+
+            }
         }
     }
-
 //    fun addUvData(uvData: UvData){
 //        uiScope.launch(Dispatchers.IO) {
 //            Log.i("problem1", "add uv data")
