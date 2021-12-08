@@ -33,4 +33,21 @@ interface DataDao {
     @Query("SELECT * FROM temperature_table ORDER BY id DESC")
     fun readAllTemperatureData(): LiveData<List<TemperatureData>>
 
+
+
+ @Query("SELECT temperatureData FROM temperature_table ORDER BY ID DESC LIMIT 1")
+ fun readLastTemperature(): LiveData<String>
+
+ @Query("SELECT humidityData FROM humidity_table ORDER BY ID DESC LIMIT 1")
+ fun readLastHumidity(): LiveData<String>
+
+ @Query("SELECT uvData FROM uv_table ORDER BY ID DESC LIMIT 1")
+ fun readLastUv(): LiveData<String>
+
+ @Query("SELECT barometerData FROM barometer_table ORDER BY ID DESC LIMIT 1")
+ fun readLastBarometerData(): LiveData<String>
+
+// @Query("SELECT temperatureData FROM temperature_table ORDER BY ID DESC LIMIT 1")
+// fun readTemperatureData(): LiveData<String>
+
 }

@@ -69,7 +69,7 @@ ConnectionManager.sendBTadresstoSingleton(address)
 ConnectionManager
 
             val intent = Intent(this, ControlActivity::class.java)
-            intent.putExtra(EXTRA_ADRESS, address)
+            //intent.putExtra(EXTRA_ADRESS, address)
             startActivity(intent)
 
         }
