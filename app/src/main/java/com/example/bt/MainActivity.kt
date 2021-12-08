@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import com.example.bt.singleton.ConnectionManager
+import com.example.bt.singleton.DataRecieve
 import org.jetbrains.anko.startActivityForResult
 import org.jetbrains.anko.toast
 
@@ -28,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        DataRecieve.init(applicationContext)
 
         m_bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         if(m_bluetoothAdapter == null){
@@ -62,10 +65,13 @@ m_pairedDevices=m_bluetoothAdapter!!.bondedDevices
         findViewById<ListView>(R.id.select_device_list).onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             val device: BluetoothDevice = list[position]
             val address: String = device.address
+ConnectionManager.sendBTadresstoSingleton(address)
+ConnectionManager
 
             val intent = Intent(this, ControlActivity::class.java)
             intent.putExtra(EXTRA_ADRESS, address)
             startActivity(intent)
+
         }
         }
 

@@ -15,7 +15,7 @@ class BarometerActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.temperature_layout)
-        ControlActivity.m_adress = intent.getStringExtra(MainActivity.EXTRA_ADRESS).toString()
+   //     ControlActivity.m_adress = intent.getStringExtra(MainActivity.EXTRA_ADRESS).toString()
         setLineChartData()
         findViewById<Button>(R.id.Main).setOnClickListener(View.OnClickListener { mainActivity() })
         findViewById<Button>(R.id.temperature_humidity).setOnClickListener(View.OnClickListener { temperatureActivity() })
@@ -24,17 +24,17 @@ class BarometerActivity: AppCompatActivity() {
 
     fun mainActivity(){
         val myIntent: Intent = Intent(this@BarometerActivity, ControlActivity::class.java)
-        myIntent.putExtra(MainActivity.EXTRA_ADRESS, ControlActivity.m_adress)
+     //   myIntent.putExtra(MainActivity.EXTRA_ADRESS, ControlActivity.m_adress)
         this@BarometerActivity.startActivity(myIntent)
     }
     fun temperatureActivity(){
         val myIntent: Intent = Intent(this@BarometerActivity, TemperatureActivity::class.java)
-        myIntent.putExtra(MainActivity.EXTRA_ADRESS_GRAF1, ControlActivity.m_adress)
+     //   myIntent.putExtra(MainActivity.EXTRA_ADRESS_GRAF1, ControlActivity.m_adress)
         this@BarometerActivity.startActivity(myIntent)
     }
     fun uvActivity(){
         val myIntent: Intent = Intent(this@BarometerActivity, UVActivity::class.java)
-        myIntent.putExtra(MainActivity.EXTRA_ADRESS_GRAF3, ControlActivity.m_adress)
+     //  myIntent.putExtra(MainActivity.EXTRA_ADRESS_GRAF3, ControlActivity.m_adress)
         this@BarometerActivity.startActivity(myIntent)
     }
     fun setLineChartData(){
