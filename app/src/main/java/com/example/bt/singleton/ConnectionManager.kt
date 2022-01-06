@@ -50,23 +50,23 @@ object ConnectionManager {
 //            Log.i("Progress dialog", "connecting dialog")
 //        }
             try {
-                Log.i("trying", "try catch first line")
+                Log.i("connection", "try catch first line")
                 if (m_bluetoothSocket == null || !m_isConnected) {
-                    Log.i("checking bt socket", "m_bluetoothSocket == null || !m_isConnected")
+                    Log.i("connection", "m_bluetoothSocket == null || !m_isConnected")
                     m_bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-                    Log.i("mbtadapter", "getting an instance of BT adapter")
+                    Log.i("connection", "getting an instance of BT adapter")
 
                     val device: BluetoothDevice = m_bluetoothAdapter.getRemoteDevice(m_adress)
-                    Log.i("deviceslist", "cycling throu device lists $device")
+                    Log.i("connection", "cycling throu device lists $device")
 
                     m_bluetoothSocket = device.createInsecureRfcommSocketToServiceRecord(m_myUUID)
-                    Log.i("Our Socket", "creating socket for our device")
+                    Log.i("connection", "creating socket for our device")
 
                     BluetoothAdapter.getDefaultAdapter().cancelDiscovery()
-                    Log.i("getting adapter", "getting adapter and canceling discovery")
+                    Log.i("connection", "getting adapter and canceling discovery")
 
                     m_bluetoothSocket!!.connect()
-                    Log.i("CONNECTION", "Trying to connect to our device")
+                    Log.i("connection", "Trying to connect to our device")
                     DataRecieve.passSocket(m_bluetoothSocket!!)
                     DataRecieve.setRecieveString("good")
                 }

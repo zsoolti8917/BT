@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.example.bt.data.DataRepository
@@ -71,7 +72,9 @@ class ControlFragment : Fragment() {
     fun showData(str: String) {
         val dataTemperatureView = viewh?.findViewById<TextView>(R.id.temperature_text_mutable)
         val dataHumidityView = viewh?.findViewById<TextView>(R.id.humidity_text_mutable)
-        val dataUvView = viewh?.findViewById<TextView>(R.id.uv_text_mutable)
+        val dataUvView = viewh?.findViewById<ProgressBar>(R.id.progressBar)
+        dataUvView?.max = 1200
+        //dataUvView?.min = 0
         val dataBarometerView = viewh?.findViewById<TextView>(R.id.barometer_text_mutable)
 
         // dataTempView?.setText(str)
@@ -80,19 +83,31 @@ class ControlFragment : Fragment() {
 
         when (help) {
             "<" -> {
-dataTemperatureView?.setText(str.subSequence(1,6))
+                dataTemperatureView?.setText(str.subSequence(1, 6))
 
             }
             "^" -> {
-dataBarometerView?.setText(str.subSequence(1,7))
+                dataBarometerView?.setText(str.subSequence(1, 7))
             }
             "?" -> {
-                dataHumidityView?.setText(str.subSequence(1,6
-                ))
+                dataHumidityView?.setText(
+                    str.subSequence(
+                        1, 6
+                    )
+                )
 
             }
             "%" -> {
-                dataUvView?.setText(str.subSequence(1,5))
+                if (str.isNotBlank()) {
+                    var data = (str.subSequence(1, 5).toString().toFloat() * 100).toInt()
+                    Log.i("bar", "aval data" + data.toString())
+
+                    Log.i("bar", "aval mas" + data)
+                    dataUvView?.setProgress(data, false)
+                    Log.i("bar", "set progress")
+                }
+
+                // dataUvView?.setProgress(500)
             }
             else -> { // Note the block
                 print("x is neither 1 nor 2")

@@ -23,7 +23,10 @@ class humidityFragment : Fragment() {
     val uiScope = CoroutineScope(Dispatchers.Main + job)
     val xvalue = ArrayList<String>()
     val lineentry = ArrayList<Entry>()
+ var ez : LineChart? = null
+   // var linedataset: LineDataSet? = null
 
+    var data : LineData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,8 +66,9 @@ class humidityFragment : Fragment() {
                     }
 
 
-
-
+//updateData(helper,it.get(it.size).humidityData.toString(), it.get(it.size).time.toString())
+                //    helper++
+                  //  setLineChartData()
                 }
 
             }
@@ -78,14 +82,20 @@ class humidityFragment : Fragment() {
         })
         return viewh
     }
-fun updateData(){
-    val ez = viewh?.findViewById<LineChart>(R.id.linechart2)
+fun updateData(help : Int, sensorData : String, sensorTime : String){
+    ez = viewh?.findViewById<LineChart>(R.id.linechart2)
+
+    xvalue.add(sensorTime.toString())
+    lineentry.add(Entry(sensorData.subSequence(1,6).toString().toFloat(), help))
+
     val linedataset = LineDataSet(lineentry, "Humidity")
-    val data = LineData(xvalue, linedataset)
+    data = LineData(xvalue, linedataset)
     ez?.data = data
+    ez?.notifyDataSetChanged()
+    ez?.invalidate()
 }
     fun setLineChartData() {
-        val ez = viewh?.findViewById<LineChart>(R.id.linechart2)
+        ez = viewh?.findViewById<LineChart>(R.id.linechart2)
         Log.i("test","problem1")
 //        val xvalue = ArrayList<String>()
 //        xvalue.add("11:00 AM")
@@ -121,7 +131,7 @@ fun updateData(){
         Log.i("test","problem6")
         linedataset.fillColor = resources.getColor(R.color.humidity_green_data)
         Log.i("test","problem7")
-        val data = LineData(xvalue, linedataset)
+        data = LineData(xvalue, linedataset)
         Log.i("test","problem8")
         linedataset.fillAlpha = 30
         Log.i("test","problem9")
@@ -129,8 +139,10 @@ fun updateData(){
         ez?.data = data
         Log.i("test","problem10")
         ez?.setBackgroundColor(resources.getColor(R.color.graf_background))
+        ez?.notifyDataSetChanged()
+        ez?.invalidate()
         Log.i("test","problem11")
-        ez?.animateXY(1000, 1000)
+       // ez?.animateXY(1000, 1000)
 
         Log.i("test","problem12")
     }

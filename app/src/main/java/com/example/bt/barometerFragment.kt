@@ -24,6 +24,7 @@ class barometerFragment : Fragment() {
     val uiScope = CoroutineScope(Dispatchers.Main + job)
     val xvalue = ArrayList<String>()
     val lineentry = ArrayList<Entry>()
+    var helper = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,12 +38,13 @@ class barometerFragment : Fragment() {
 
         val repository = DataRepository(SensorDataDatabase.getDatabase(requireActivity().application).dataDao())
         repository.readAllBarometerData.observe(viewLifecycleOwner,{
-            var helper = 1
+
             uiScope.launch {
                 withContext(Dispatchers.Main){
                     if(fetchFirstData == false) {
                         it.forEach{ data ->
                             xvalue.add(data.time.toString())
+                            //xvalue.add(data.time.substring(11,19))
 
                             lineentry.add(Entry(data.barometerData.subSequence(1,7).toString().toFloat(), helper))
                             helper++
@@ -57,10 +59,22 @@ class barometerFragment : Fragment() {
                         // populateDataChart(it.get(i).id.toString(), it.get(i).time.toString(), it.get(i).barometerData.subSequence(1,7).toString())
 
                         fetchFirstData = true
+
                         setLineChartData()
+
                     }
-
-
+//                    xvalue.add(it.first().time.substring(11,19))
+//                    Log.i("test5", "add xvalue time first " +it.first().time.substring(11,19))
+//                   //xvalue.removeLast()
+//                    Log.i("test5", "xvalue remove the first element " +xvalue.first())
+//                    lineentry.add(Entry(it.first().barometerData.subSequence(1,7).toString().toFloat(),helper))
+//                    Log.i("test5", "add line entry it first data = " +it.first().barometerData.subSequence(1,7).toString() + "add the ID of it =" + helper)
+//                  // lineentry.removeLast()
+//                    Log.i("test5", "remove the first line entry element data =  " + lineentry.first().`val`.toString() + " remove line entry first id = " +lineentry.first().xIndex)
+//                    helper++
+//                    Log.i("test5", "helper index value = " + helper.toString())
+//                    setLineChartData()
+//                    Log.i("test5", "draw the DATA!!! ")
 
                 }
 
@@ -149,8 +163,9 @@ fun populateDataChart(id : String,time : String, data : String){
         Log.i("test","problem10")
         ez?.setBackgroundColor(resources.getColor(R.color.graf_background))
         Log.i("test","problem11")
-        ez?.animateXY(1000, 1000)
-
+     //   ez?.animateXY(1000, 1000)
+        ez?.notifyDataSetChanged()
+        ez?.invalidate()
         Log.i("test","problem12")
     }
 
