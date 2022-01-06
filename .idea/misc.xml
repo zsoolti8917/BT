@@ -3,7 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/BT/app/src/main/res/layout/control_layout.xml" value="0.19706180344478216" />
+        <entry key="..\:/BT/app/src/main/res/layout/activity_main.xml" value="0.3333333333333333" />
+        <entry key="..\:/BT/app/src/main/res/layout/control_layout.xml" value="0.25" />
+        <entry key="..\:/BT/app/src/main/res/layout/fragment_barometer2.xml" value="0.30104166666666665" />
+        <entry key="..\:/BT/app/src/main/res/layout/fragment_control.xml" value="0.30104166666666665" />
+        <entry key="..\:/BT/app/src/main/res/layout/fragment_humidity2.xml" value="0.30104166666666665" />
+        <entry key="..\:/BT/app/src/main/res/layout/fragment_temperature2.xml" value="0.30104166666666665" />
+        <entry key="..\:/BT/app/src/main/res/layout/fragment_uv2.xml" value="0.30104166666666665" />
+        <entry key="..\:/BT/app/src/main/res/layout/temperature_layout.xml" value="0.30104166666666665" />
+        <entry key="..\:/BT/app/src/main/res/layout/uv_activity.xml" value="0.30104166666666665" />
+        <entry key="..\:/BT/app/src/main/res/menu/bottom_menu.xml" value="0.30104166666666665" />
         <entry key="..\:/Users/Zsolti/Downloads/hmmm/BT/app/src/main/res/layout/barometer_layout.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Zsolti/Downloads/hmmm/BT/app/src/main/res/layout/control_layout.xml" value="0.1046875" />
         <entry key="..\:/Users/Zsolti/Downloads/hmmm/BT/app/src/main/res/layout/temperature_layout.xml" value="0.20416666666666666" />

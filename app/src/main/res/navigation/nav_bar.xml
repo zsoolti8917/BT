@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_bar"
+    app:startDestination="@id/controlFragment">
+
+    <fragment
+        android:id="@+id/controlFragment"
+        android:name="com.example.bt.ControlFragment"
+        android:label="fragment_control"
+        tools:layout="@layout/fragment_control" />
+    <fragment
+        android:id="@+id/temperatureFragment"
+        android:name="com.example.bt.temperatureFragment"
+        android:label="fragment_temperature2"
+        tools:layout="@layout/fragment_temperature2" />
+    <fragment
+        android:id="@+id/humidityFragment"
+        android:name="com.example.bt.humidityFragment"
+        android:label="fragment_humidity2"
+        tools:layout="@layout/fragment_humidity2" />
+    <fragment
+        android:id="@+id/uvFragment"
+        android:name="com.example.bt.uvFragment"
+        android:label="fragment_uv2"
+        tools:layout="@layout/fragment_uv2" />
+    <fragment
+        android:id="@+id/barometerFragment"
+        android:name="com.example.bt.barometerFragment"
+        android:label="fragment_barometer2"
+        tools:layout="@layout/fragment_barometer2" />
+</navigation>

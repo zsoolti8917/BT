@@ -19,29 +19,27 @@ class TemperatureActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.temperature_layout)
-        ControlActivity.m_adress = intent.getStringExtra(MainActivity.EXTRA_ADRESS).toString()
+    //    ControlActivity.m_adress = intent.getStringExtra(MainActivity.EXTRA_ADRESS).toString()
         setLineChartData()
         findViewById<Button>(R.id.Main).setOnClickListener(View.OnClickListener { mainActivity() })
         findViewById<Button>(R.id.barometer).setOnClickListener(View.OnClickListener { barometerActivity() })
         findViewById<Button>(R.id.uv).setOnClickListener(View.OnClickListener { uvActivity() })
         val repository = DataRepository(SensorDataDatabase.getDatabase(applicationContext).dataDao())
-
-
         repository.readAllBarometerData.observe(this,{ Log.i("tag",it.size.toString()) })
     }
     fun mainActivity(){
         val myIntent: Intent = Intent(this@TemperatureActivity, ControlActivity::class.java)
-        myIntent.putExtra(MainActivity.EXTRA_ADRESS, ControlActivity.m_adress)
+       // myIntent.putExtra(MainActivity.EXTRA_ADRESS, ControlActivity.m_adress)
         this@TemperatureActivity.startActivity(myIntent)
     }
     fun barometerActivity(){
         val myIntent: Intent = Intent(this@TemperatureActivity, BarometerActivity::class.java)
-        myIntent.putExtra(MainActivity.EXTRA_ADRESS, ControlActivity.m_adress)
+      //  myIntent.putExtra(MainActivity.EXTRA_ADRESS, ControlActivity.m_adress)
         this@TemperatureActivity.startActivity(myIntent)
     }
     fun uvActivity(){
         val myIntent: Intent = Intent(this@TemperatureActivity, UVActivity::class.java)
-        myIntent.putExtra(MainActivity.EXTRA_ADRESS, ControlActivity.m_adress)
+      //  myIntent.putExtra(MainActivity.EXTRA_ADRESS, ControlActivity.m_adress)
         this@TemperatureActivity.startActivity(myIntent)
     }
     fun setLineChartData(){

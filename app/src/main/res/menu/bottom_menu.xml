@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/controlFragment"
+        android:title="Control"
+        android:icon="@drawable/home_icon_black" />
+    <item
+        android:id="@+id/temperatureFragment"
+        android:title="Temperature"
+        android:icon="@drawable/themperature"/>
+    <item
+        android:id="@+id/humidityFragment"
+        android:title="Humidity"
+        android:icon="@drawable/humidity_icon"/>
+    <item
+        android:id="@+id/uvFragment"
+        android:title="Uv"
+        android:icon="@drawable/uv_icon"/>
+    <item
+        android:id="@+id/barometerFragment"
+        android:title="Barometer"
+        android:icon="@drawable/barometer_icon"/>
+</menu>
